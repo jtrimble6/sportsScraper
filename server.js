@@ -89,6 +89,16 @@ app.get('/articles', function(req, res) {
       })
 })
 
+app.get('/savedArticles', function(req, res) {
+    db.SavedArticle.find({})
+      .then(function(dbArticle) {
+          res.json(dbArticle)
+      })
+      .catch(function(err) {
+          res.json(err)
+      })
+})
+
 app.get('/articles/:id', function(req, res) {
     db.Article.findOne({ _id: req.params.id })
       .populate('note')
@@ -103,7 +113,23 @@ app.get('/articles/:id', function(req, res) {
 app.post('/articles/:id', function(req, res) {
     db.Note.create(req.body)
       .then(function(dbNote) {
-          res.json(dbNote)
+          return db.Article.findOneAndUpdate({ _id: req.params.id },{ note: dbNote._id },{ new: true })
+      })
+      .then(function(dbArticle) {
+          res.json(dbArticle)
+      })
+      .catch(function(err) {
+          res.json(err)
+      })
+})
+
+app.post('/savedArticles/:id', function(req, res) {
+    db.SavedArticle.create(req.body)
+      .then(function(dbSavedArticle) {
+          return db.SavedArticles.findOneAndUpdate({ _id: req.params.id },{ savedArticle: dbSavedArticle }, { new: true })
+      })
+      .then(function(dbArticle) {
+          res.json(dbArticle)
       })
       .catch(function(err) {
           res.json(err)
