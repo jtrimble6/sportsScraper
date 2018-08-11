@@ -8,7 +8,7 @@ var db = require('../models')
 module.exports = function(app) {
     app.use(logger('dev'))
     var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/sportsscraper'
-    var DEVELOPMENT = 'mongodb://localhost/sportsscraper'
+    // var DEVELOPMENT = 'mongodb://localhost/sportsscraper'
 
     mongoose.Promise = Promise
     mongoose.connect(MONGODB_URI)
