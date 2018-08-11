@@ -8,6 +8,11 @@ var ArticleSchema = new Schema ({
         required: true
     },
 
+    img: {
+        type: String,
+        required: false
+    },
+
     link: {
         type: String,
         required: true

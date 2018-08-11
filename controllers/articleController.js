@@ -8,9 +8,10 @@ var db = require('../models')
 module.exports = function(app) {
     app.use(logger('dev'))
     var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/sportsscraper'
+    var DEVELOPMENT = 'mongodb://localhost/sportsscraper'
 
     mongoose.Promise = Promise
-    mongoose.connect(MONGODB_URI)
+    mongoose.connect(DEVELOPMENT)
 
     app.get('/', function (req, res) {
         res.render('index')
@@ -24,16 +25,26 @@ module.exports = function(app) {
         
         request(url, function(err, response, body) {
             if (err) {
+                console.log('REQUEST ERROR')
                 console.log(err)
             } 
             var $ = cheerio.load(body)
             console.log('Starting here:')
             console.log('Starting here:')
             console.log('Starting here:')
+            var result = {}
+            // $('.articleMedia').each(function(i, element) {
+            //     result.img = $(this)
+            //         .children('a')
+            //         .children('img')
+            //         .attr('src')
+            //     console.log(result.img)
+            // })
+            
             $('.articleContent').each(function(i, element) {
-                console.log('element:')
-                console.log(element)
-                var result = {}
+                console.log('THIS:')
+                // console.log(this)
+                
                 result.title = $(this)
                     .children('a')
                     .text()
@@ -44,15 +55,41 @@ module.exports = function(app) {
                     // console.log('Articles:')
                     // console.log(result)
                 console.log(result.link)
-                db.Article.create(result)
-                  .then(function(dbArticle) {
-                      console.log(dbArticle)
-                  })
-                  .catch(function(err) {
-                      return res.json(err)
-                  })
+                // db.Article.create(result)
+                //   .then(function(dbArticle) {
+                //       console.log(dbArticle)
+                //   })
+                //   .catch(function(err) {
+                //       console.log(err)
+                //     //   return res.json(err)
+                // })
             })
-            res.send('COMPLETED SCRAPE')
+            $('.articleMedia').each(function(i, element) {
+                result.img = $(this)
+                    .children('a')
+                    .children('img')
+                    .attr('src')
+                console.log(result.img)
+            
+                db.Article.create(result)
+                    .then(function(dbArticle) {
+                        console.log(dbArticle)
+                    })
+                    .catch(function(err) {
+                        console.log(err)
+                    //   return res.json(err)
+                })
+            })
+            
+            // db.Article.create(result)
+            //     .then(function(dbArticle) {
+            //         console.log(dbArticle)
+            //     })
+            //     .catch(function(err) {
+            //         console.log(err)
+            //     //   return res.json(err)
+            //     })
+            res.send('scrape complete')
         })
     
     })

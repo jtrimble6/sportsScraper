@@ -6,15 +6,21 @@
         <title>Sports Scraper</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="./css/styles.css">
     </head>
     <body>
         <div id="wrapper">
-            <h1>Scrape Some Sports</h1>
-            <form>
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">Scrape Some Sports</h1>
+                    <p class="lead">Search for up-to-date sports news.</p>
+                </div>
+            </div>
+            <div class='navBar'>
                 <button class='articleSearch'>Find Articles</button>
                 <button class='savedSearch'>Saved Articles</button>
                 <button class='clearSearch'>Clear Articles</button>
-            </form><br><hr>
+            </div><br><hr>
             <div id="articles"></div>
             <div id="notes"></div>
         </div>

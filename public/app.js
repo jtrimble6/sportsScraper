@@ -1,49 +1,44 @@
-$(document).on('click', '.articleSearch', function(event) {
-    event.preventDefault()
-    console.log('find clicked')
+//FUNCTION TO FIND ARTICLES
+function getArticles() {
     $.getJSON('/articles', function(data) {
         $('#articles').empty()
         for (var i=0; i<10; i++) {
             if(!data[i].saved) {
                 var article = {
                     title: data[i].title,
-                    link: data[i].link
+                    link: data[i].link,
+                    img: data[i].img
                 }
-                $('#articles').append("<div class='article'><p class='pTitle'>" + article.title + "</p><p class='pLink'><a href='" + article.link + "'>" + article.link +"</a></p><button type='button' class='btn btn-danger saveArticle' data-id='" + data[i]._id + "'>Save Article</button></div><hr>")
-                console.log(data[i])
+                $('#articles').append("<div class='article'><p class='pTitle'>" + article.title + "</p><img class='pImg' src='" + article.img + "'><p class='pLink'><a href='" + article.link + "'>Link to Article</a></p><button type='button' class='btn btn-danger saveArticle' data-id='" + data[i]._id + "'>Save Article</button></div><hr>")
+                // console.log(data[i])
             }  
         }
     })
-})
+}
 
-$(document).on('click', '.savedSearch', function(event) {
-    event.preventDefault()
-    console.log('search clicked')
+//FUNCTION TO FIND SAVED ARTICLES
+function getSaved() {
     $('#articles').empty()
-    $.get('/articles', function(data) {
+    $.get('/articles/', function(data) {
         for (var k=0; k<data.length; k++) {
             if(data[k].saved) {
                 var savedArticle = {
                     title: data[k].title,
-                    link: data[k].link
+                    link: data[k].link,
+                    img: data[k].img
                 }
-                $('#articles').append("<div class='article'><p class='pTitle'>" + savedArticle.title + "</p><p class='pLink'><a href='" + savedArticle.link + "'>" + savedArticle.link +"</a></p><button type='button' class='btn btn-warning removeArticle' data-id='" + data[k]._id + "'>Remove Article</button></div><hr>")
-                console.log(data)
+                // console.log(savedArticle)
+                $('#articles').append("<div class='article'><p class='pTitle'>" + savedArticle.title + "</p><img class='pImg' src='" + savedArticle.img + "'><p class='pLink'><a href='" + savedArticle.link + "'>Link to Article</a></p><button type='button' class='btn btn-warning removeArticle' data-id='" + data[k]._id + "'>Remove Article</button></div><hr>")
+                // console.log(data)
             }
             
         }
             
     })
-        
-    
-})
+}
 
-
-$(document).on('click', '.saveArticle', function(event) {
-    console.log(this);
-    $("#notes").empty();
-    var thisId = $(this).attr('data-id')
-
+//FUNCTION TO SAVE AN ARTICLE
+function saveArticle(thisId) {
     $.ajax({
         method: 'GET',
         url: '/articles/' + thisId
@@ -58,8 +53,6 @@ $(document).on('click', '.saveArticle', function(event) {
         $('#notes').append('<p>Saved Note:</p>')
         
         if (data.note) {
-            console.log('Here are your notes:')
-            console.log(data.note.body)
             $('#notes').append(data.note.body)
         }
 
@@ -68,8 +61,7 @@ $(document).on('click', '.saveArticle', function(event) {
         $(document).on('click', '#savedNote', function(event) {
             event.preventDefault()
             console.log('save me')
-            var thisId = $(this).attr('data-id')
-            console.log(this)
+            let thisId = $(this).attr('data-id')
 
             $.ajax({
                 method: 'POST',
@@ -79,9 +71,6 @@ $(document).on('click', '.saveArticle', function(event) {
                 }
             })
             .then(function(data) {
-                console.log('Here is the data:')
-                console.log(data)
-                console.log(data.note)
                 $('#notes').empty()
             })
 
@@ -91,30 +80,15 @@ $(document).on('click', '.saveArticle', function(event) {
                 method: 'POST',
                 url: '/savedArticles/' + thisId
             })
-            .then(function(data) {
+            .then(function(data, res) {
                 console.log('You just saved an article')
-                // $.getJSON('/articles', function(data) {
-                //     for (var i=0; i<10; i++) {
-                //         if(!data[i].saved) {
-                //             var article = {
-                //                 title: data[i].title,
-                //                 link: data[i].link
-                //             }
-                //             $('#articles').append("<div class='article'><p class='pTitle'>" + article.title + "</p><p class='pLink'><a href=" + article.link + " + </a></p><button data-id='" + data[i]._id + "' class='saveArticle'>Save Article</button></div><hr>")
-                //             console.log(data[i])
-                //         }  
-                //     }
-                // })
             })
         })
     })
-})
+}
 
-$(document).on('click', '.removeArticle', function(event) {
-    event.preventDefault()
-    console.log('save me')
-    var thisId = $(this).attr('data-id')
-    console.log(this)
+//FUNCTION TO REMOVE AN ARTICLE
+function removeArticle(thisId) {
     $.ajax({
         method: 'POST',
         url: '/removedArticles/' + thisId
@@ -122,13 +96,33 @@ $(document).on('click', '.removeArticle', function(event) {
     .then(function(data) {
         console.log('You just removed an article')
     })
+}
+
+//RUN FUNCTION TO FIND ARTICLES WHEN 'ARTICLE SEARCH' IS CLICKED
+$(document).on('click', '.articleSearch', function(event) {
+    event.preventDefault()
+    console.log('find clicked')
+    getArticles()
 })
 
-// $(document).on('click', '#savedNote', function(event) {
-//     event.preventDefault()
-//     console.log('save me')
-//     if (data.note) {
-//         console.log(data.note)
-//         $('#notes').append(data.note)
-//     }
-// })
+//RUN FUNCTION TO FIND SAVED ARTICLES WHEN 'SAVED ARTICLES' IS CLICKED
+$(document).on('click', '.savedSearch', function(event) {
+    event.preventDefault()
+    console.log('search clicked')
+    getSaved()
+})
+
+//RUN FUNCTION TO SAVE ARTICLE WHEN 'SAVE NOTE' IS CLICKED
+$(document).on('click', '.saveArticle', function(event) {
+    $("#notes").empty();
+    let thisId = $(this).attr('data-id')
+    saveArticle(thisId)
+})
+
+//RUN FUNCTION TO REMOVE ARTICLE WHEN 'REMOVE ARTICLE' IS CLICKED
+$(document).on('click', '.removeArticle', function(event) {
+    event.preventDefault()
+    console.log('save me')
+    var thisId = $(this).attr('data-id')
+    removeArticle(thisId)
+})

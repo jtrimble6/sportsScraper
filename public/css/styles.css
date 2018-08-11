@@ -1,0 +1,20 @@
+.jumbotron {
+    text-align: center;
+    background-image: url("headerImage.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    color: white;
+}
+
+.navBar {
+    text-align: center;
+}
+
+.article {
+    text-align: center;
+}
+
+.pImg {
+    width: 50%;
+    height: 50%;
+}
