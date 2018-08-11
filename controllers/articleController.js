@@ -7,8 +7,10 @@ var db = require('../models')
 
 module.exports = function(app) {
     app.use(logger('dev'))
+    var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/sportsscraper'
 
-    mongoose.connect('mongodb://localhost/sportsscraper')
+    mongoose.Promise = Promise
+    mongoose.connect(MONGODB_URI)
 
     app.get('/', function (req, res) {
         res.render('index')
