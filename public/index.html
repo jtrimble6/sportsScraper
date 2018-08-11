@@ -4,18 +4,22 @@
         <meta charset='UTF-8'>
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Sports Scraper</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css"/>
     </head>
     <body>
         <div id="wrapper">
             <h1>Scrape Some Sports</h1>
             <form>
-                <button class='articleSearch'>Go!</button>
+                <button class='articleSearch'>Find Articles</button>
+                <button class='savedSearch'>Saved Articles</button>
+                <button class='clearSearch'>Clear Articles</button>
             </form><br><hr>
             <div id="articles"></div>
             <div id="notes"></div>
         </div>
 
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src='/app.js'></script>
     </body>
